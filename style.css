@@ -21,3 +21,8 @@ body {
     background-color: lime;
     border: 0.25vmin solid black;
 }
+
+.food {
+    background-color: red;
+    border: 0.25vmin solid black;
+}

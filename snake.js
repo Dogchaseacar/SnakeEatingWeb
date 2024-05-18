@@ -7,7 +7,7 @@ const snakeBody = [
 
 const updateSnake = () => {
     for (let i = snakeBody.length - 2; i >= 0; i--) {
-        snakeBody[i + 1] = {...snakeBody[i]} ;
+        snakeBody[i + 1] = { ...snakeBody[i] };
     }
     const snakeDirection = getInputDirection();
     snakeBody[0].x += snakeDirection.x;
@@ -17,10 +17,47 @@ const updateSnake = () => {
 const drawSnake = (gameBoard) => {
     for (let i = 0; i < snakeBody.length; i++) {
         const segment = snakeBody[i];
-        const snakeElemt = document.createElement("div")
-        snakeElemt.style.gridRowStart = segment.y;
-        snakeElemt.style.gridColumnStart = segment.x;
-        snakeElemt.classList.add("snake");
-        gameBoard.appendChild(snakeElemt);
+        const snakeElement = document.createElement("div")
+        snakeElement.style.gridRowStart = segment.y;
+        snakeElement.style.gridColumnStart = segment.x;
+        snakeElement.classList.add("snake");
+        gameBoard.appendChild(snakeElement);
     }
+}
+const onSnake = (postion) => {
+    for (let i = 0; i < snakeBody.length; i++) {
+        if (equalPositions(snakeBody[i], postion)) {
+            return true;
+        }
+        return false;
+    }
+}
+
+const equalPositions = (pos1, pos2) => {
+    return pos1.x === pos2.x && pos1.y === pos2.y;
+}
+
+const expandSnake = (amount) => {
+    for (let i = 0; i < amount; i++) {
+        snakeBody.push({ ...snakeBody[snakeBody.length - 1] });
+    }
+}
+
+const isGameOver = () => {
+    return  isSnakeOutOfBounds() || isSnakeIntersectSelf();
+}
+
+const isSnakeOutOfBounds = () => {
+    return isOutofBounds(snakeBody[0]);
+}
+
+const isSnakeIntersectSelf = () => {
+    const snakeHead = snakeBody[0];
+    for (let i = 1; i < snakeBody.length; i++) {
+        if (equalPositions(snakeHead,snakeBody[i])) {
+
+            return true;
+        }
+    }
+    return false;
 }
